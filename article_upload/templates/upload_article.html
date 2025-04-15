@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card shadow p-4">
+    <h4 class="mb-3">Upload a New Article</h4>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">Article Name</label>
+            {{ form.name }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Upload File</label>
+            {{ form.file }}
+        </div>
+        <button type="submit" class="btn btn-primary">Upload</button>
+        <a href="{% url 'article_list' %}" class="btn btn-secondary">Back</a>
+    </form>
+</div>
+{% endblock %}

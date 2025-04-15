@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="card shadow p-4">
+        <h3 class="mb-4">{{ article.name }}</h3>
+
+        <!-- View Article File -->
+        <div class="mb-3">
+            <a href="{{ article_file.url }}" target="_blank" class="btn btn-success">📄 View PDF</a>
+        </div>
+
+        <!-- Edit Article -->
+        <h4>Edit Article</h4>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" name="update" class="btn btn-warning">✏️ Update</button>
+        </form>
+
+        <hr>
+
+        <!-- Delete Article -->
+        <form method="post" onsubmit="return confirm('Are you sure you want to delete this article?');">
+            {% csrf_token %}
+            <button type="submit" name="delete" class="btn btn-danger">🗑️ Delete</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

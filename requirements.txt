@@ -1,0 +1,8 @@
+Django
+pandas
+requests
+spacy
+pycountry
+PyMuPDF
+openpyxl
+numpy

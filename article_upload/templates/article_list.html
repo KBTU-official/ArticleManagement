@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-end mb-3">
+    <a href="{% url 'upload_article' %}" class="btn btn-primary">+ Upload Article</a>
+</div>
+
+<div class="card shadow p-3">
+    <h4 class="mb-3">Uploaded Articles</h4>
+    
+    <form method="post" action="{% url 'export_selected_articles' %}" id="exportForm">
+        {% csrf_token %}
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Select</th>
+                    <th>#</th>
+                    <th>Article Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for article in articles %}
+                    <tr>
+                        <td><input type="checkbox" name="selected_articles" value="{{ article.id }}"></td>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ article.name }}</td>
+                        <td>
+                            <a href="{{ article.file.url }}" class="btn btn-success btn-sm" target="_blank">📄 View PDF</a>
+                            <a href="{% url 'process_articles' article.id %}" class="btn btn-info btn-sm">🔍 Extract Data</a>
+                            <a href="{% url 'article_detail' article.id %}" class="btn btn-primary btn-sm">📖 Manage</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">No articles uploaded yet.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Extract & Export Button -->
+        <button type="submit" class="btn btn-warning">🔄 Extract & Export Selected</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById("exportForm").onsubmit = function() {
+        let selected = document.querySelectorAll('input[name="selected_articles"]:checked');
+        if (selected.length === 0) {
+            alert("Please select at least one article to export.");
+            return false;  // Prevent form submission
+        }
+        return true;
+    };
+</script>
+
+{% endblock %}
